@@ -1,0 +1,8 @@
+# https://leetcode.com/problems/confirmation-rate/description/?envType=study-plan-v2&envId=top-sql-50
+# Write your MySQL query statement below
+select s.user_id,
+case when c.time_stamp is null then 0.0 else 
+round(avg(if(c.action = 'confirmed',1,0)),2) end as confirmation_rate
+from Signups s left join Confirmations c 
+on s.user_id = c.user_id
+group by s.user_id
