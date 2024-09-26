@@ -1,0 +1,22 @@
+Write a solution to find the prices of all products on 2019-08-16. Assume the price of all products before any change is 10.
+Return the result table in any order.
+The result format is in the following example.
+
+# Write your MySQL query statement below
+select distinct product_id, 10 as price
+from Products
+where product_id not in 
+# need to not have a chnage date before that date
+(select distinct product_id 
+from Products 
+where change_date <= '2019-08-16')
+
+union
+
+select distinct product_id, new_price as price
+from Products
+where (product_id,change_date) in
+(select product_id, max(change_date)
+from Products
+where change_date <=  '2019-08-16'
+group by product_id)
