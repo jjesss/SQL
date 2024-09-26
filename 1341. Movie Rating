@@ -1,0 +1,22 @@
+# find the name of the user who has rated the greatest number of movies. In case of a tie, return the lexicographically smaller user name.
+(select u.name as results
+from MovieRating m left join Users u
+# on m.user_id = u.user_id
+using(user_id)
+group by user_id
+order by count(1) desc, u.name
+limit 1)
+
+# so that is name and movie name is the same itll return both
+union all
+
+# Find the movie name with the highest average rating in February 2020. In case of a tie, return the lexicographically smaller movie name.
+(select m.title as results
+from MovieRating mr left join Movies m
+# on mr.movie_id = m.movie_id
+using(movie_id)
+where mr.created_at like '2020-02%'
+group by mr.movie_id
+order by avg(rating) desc, m.title 
+limit 1
+)
